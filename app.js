@@ -83,14 +83,15 @@ app.use('/graphql', graphqlHttp({
   rootValue: {
     sessions: () => {
       return Session.find()
-        .populate('host')
-        .then(sessions => {
-          console.log({ sessions })
-          return sessions.map(session => {
-            return { ...session._doc, _id: session._doc._id }
-          })
-        })
-        .catch(err => console.log(err))
+
+      // .populate('host')
+      // .then(sessions => {
+      //   console.log({ sessions })
+      //   return sessions.map(session => {
+      //     return { ...session._doc, _id: session._doc._id }
+      //   })
+      // })
+      // .catch(err => console.log(err))
     },
     createSession: args => {
       const session = new Session({

@@ -9,7 +9,8 @@ const sessionSchema = new Schema({
   },
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   songs: {
     type: Array,
