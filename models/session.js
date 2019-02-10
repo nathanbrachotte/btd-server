@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const sessionSchema = new Schema({
   host: {
     type: Schema.Types.ObjectId,
-    required: 'User'
+    ref: 'User'
   },
   name: {
     type: String,
