@@ -22,6 +22,12 @@ module.exports = buildSchema(`
       hostOfSession: [Session!]
     }
 
+    type AuthData {
+      userId: ID!
+      token: String!
+      tokenExpiration: Int!
+    }
+
     type Session {
       _id: ID!
       host: User!
@@ -48,6 +54,7 @@ module.exports = buildSchema(`
     type RootQuery {
       sessions: [Session!]!
       songs: [Song!]!
+      login(email: String!, password: String!): AuthData!
     }
     
     type RootMutation {
