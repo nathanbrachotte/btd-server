@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql')
 const mongoose = require('mongoose')
 
+const isAuth = require('./middleware/is-auth')
+
 const graphqlSchema = require('./graphql/schema/index')
 const graphqlResolvers = require('./graphql/resolvers/index')
 const indexRouter = require('./routes/index');
@@ -23,11 +25,11 @@ app.use(bodyParser.json());
 // app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
 
-
+app.use(isAuth)
 
 app.use('/graphql', graphqlHttp({
   schema: graphqlSchema,

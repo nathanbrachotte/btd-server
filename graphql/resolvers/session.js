@@ -14,7 +14,10 @@ module.exports = {
       })
       .catch(err => console.log(err))
   },
-  createSession: args => {
+  createSession: (args, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthentificated')
+    }
     const session = new Session({
       host: '5c5c6e65dc0f45710f454409',
       name: args.sessionInput.name,
