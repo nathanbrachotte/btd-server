@@ -4,7 +4,10 @@ const { dateToString } = require('../../helpers/date')
 const { transformSong, transformSession } = require('./merge')
 
 module.exports = {
-  songs: async () => {
+  songs: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated')
+    }
     try {
       const songs = await Song.find()
       if (songs.length === 0) {
@@ -17,7 +20,10 @@ module.exports = {
       throw err;
     }
   },
-  addSong: async args => {
+  addSong: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated')
+    }
     try {
       const fetchedSession = await Session.findOne({ _id: args.sessionId })
       const song = new Song({
@@ -34,7 +40,11 @@ module.exports = {
       throw err;
     }
   },
-  deleteSong: async args => {
+  deleteSong: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated')
+    }
+    //TODO: Check its the same user that created
     try {
       console.log(args.songId)
       const song = await Song.findById(args.songId).populate('session')
