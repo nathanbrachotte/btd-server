@@ -27,7 +27,7 @@ module.exports = {
     try {
       const fetchedSession = await Session.findOne({ _id: args.sessionId })
       const song = new Song({
-        user: '5c5c6e65dc0f45710f454409',
+        user: req.userId,
         session: fetchedSession,
         spotifyId: 'spotifyId',
         name: 'namespotify',

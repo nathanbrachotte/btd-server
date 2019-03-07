@@ -19,7 +19,7 @@ module.exports = {
       throw new Error('Unauthenticated')
     }
     const session = new Session({
-      host: '5c5c6e65dc0f45710f454409',
+      host: req.userId,
       name: args.sessionInput.name,
       songs: args.sessionInput.songs,
       users: args.sessionInput.users,
@@ -31,7 +31,7 @@ module.exports = {
       .save()
       .then(result => {
         createdSession = transformSession(result)
-        return User.findById('5c5c6e65dc0f45710f454409')
+        return User.findById(req.userId)
       }).then(user => {
         if (!user) {
           throw new Error('User not found.')
