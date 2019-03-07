@@ -12,7 +12,7 @@ const isAuth = require('./middleware/is-auth')
 
 const graphqlSchema = require('./graphql/schema/index')
 const graphqlResolvers = require('./graphql/resolvers/index')
-const indexRouter = require('./routes/index');
+// const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
 const spotifyRouter = require('./routes/spotify-auth');
 
@@ -23,6 +23,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug')
+app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -30,7 +31,7 @@ app.use(cors());
 app.use(isAuth)
 
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 
 app.use('/graphql', graphqlHttp({
   schema: graphqlSchema,
@@ -51,8 +52,9 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  const status = err.status || 500
+  res.status(status);
+  res.render('error', { title: 'Oops', message: res.locals.message + ' :(', status });
 });
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@btd-bmpuu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`)
