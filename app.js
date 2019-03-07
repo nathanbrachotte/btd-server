@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql')
 const mongoose = require('mongoose')
 
+const isAuth = require('./middleware/is-auth')
+
 const graphqlSchema = require('./graphql/schema/index')
 const graphqlResolvers = require('./graphql/resolvers/index')
 const indexRouter = require('./routes/index');
@@ -16,16 +18,19 @@ const spotifyRouter = require('./routes/spotify-auth');
 
 const app = express();
 
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
-// app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(cors());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug')
 
+// app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(cors());
+app.use(isAuth)
+
+
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 
 app.use('/graphql', graphqlHttp({
   schema: graphqlSchema,

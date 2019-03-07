@@ -16,7 +16,7 @@ module.exports = {
   },
   createSession: (args, req) => {
     if (!req.isAuth) {
-      throw new Error('Unauthenticated')
+      throw new Error('Unauthentificated')
     }
     const session = new Session({
       host: req.userId,
