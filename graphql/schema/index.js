@@ -1,6 +1,5 @@
 const { buildSchema } = require('graphql')
 
-
 module.exports = buildSchema(`
 
     type Song {
@@ -14,11 +13,11 @@ module.exports = buildSchema(`
       updatedAt: String!
     }
 
-
     type User {
       _id: ID!
       email: String!
       password: String
+      username: String
       hostOfSession: [Session!]
     }
 
@@ -33,7 +32,7 @@ module.exports = buildSchema(`
       host: User!
       name: String!
       songs: [String!]
-      users: [String!]!
+      guests: [String!]!
       createdAt: String!
     }
 
@@ -41,8 +40,8 @@ module.exports = buildSchema(`
       host: String!
       name: String!
       songs: [String!]!
-      users: [String!]!
-      createdAt: String!
+      guests: [String!]!
+      createdAt: Float!
     }
 
     input UserInput {
