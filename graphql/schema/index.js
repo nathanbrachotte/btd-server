@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-const { buildSchema } = require("graphql");
-=======
 const { buildSchema } = require('graphql')
->>>>>>> c6a6a5d5931fd6bce908a18d7e3598fd90f575f7
 
 module.exports = buildSchema(`
 
