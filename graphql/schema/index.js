@@ -1,5 +1,4 @@
-const { buildSchema } = require('graphql')
-
+const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
 
@@ -19,6 +18,7 @@ module.exports = buildSchema(`
       _id: ID!
       email: String!
       password: String
+      username: String
       hostOfSession: [Session!]
     }
 
@@ -68,4 +68,4 @@ module.exports = buildSchema(`
       query: RootQuery
       mutation: RootMutation
     }
-  `)
+  `);
