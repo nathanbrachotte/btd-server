@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const { buildSchema } = require("graphql");
+=======
+const { buildSchema } = require('graphql')
+>>>>>>> c6a6a5d5931fd6bce908a18d7e3598fd90f575f7
 
 module.exports = buildSchema(`
 
@@ -12,7 +16,6 @@ module.exports = buildSchema(`
       createdAt: String!
       updatedAt: String!
     }
-
 
     type User {
       _id: ID!
@@ -33,7 +36,7 @@ module.exports = buildSchema(`
       host: User!
       name: String!
       songs: [String!]
-      users: [String!]!
+      guests: [String!]!
       createdAt: String!
     }
 
@@ -41,8 +44,8 @@ module.exports = buildSchema(`
       host: String!
       name: String!
       songs: [String!]!
-      users: [String!]!
-      createdAt: String!
+      guests: [String!]!
+      createdAt: Float!
     }
 
     input UserInput {
@@ -68,4 +71,4 @@ module.exports = buildSchema(`
       query: RootQuery
       mutation: RootMutation
     }
-  `);
+  `)
