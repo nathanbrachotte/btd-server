@@ -62,11 +62,13 @@ app.use(function(err, req, res, next) {
   })
 })
 
+const MONGO_USER = 'nathan'
+const MONGO_PASSWORD = '6LAxorqA7aYIOtnt'
+const MONGO_DB = 'btd-dev'
+
 mongoose
   .connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${
-      process.env.MONGO_PASSWORD
-    }@btd-bmpuu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`
+    `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@btd-bmpuu.mongodb.net/${MONGO_DB}?retryWrites=true`
   )
   .then(() => {
     app
