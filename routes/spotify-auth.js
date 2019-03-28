@@ -18,9 +18,11 @@ var querystring = require('querystring')
 const client_id = '2121c1623b45468ba1193d7a31fbcc09' // Your client id
 const client_secret = '9441785efc4f4fbc9a27dc41667e27f1' // Your secret
 const stateKey = 'spotify_auth_state'
-const front_end = process.env.REACT_APP_DEV_URL
-// const backend_end = 'https://btd-test-web.netlify.com'
-const backend_end = process.env.SERVER_DEV_URL
+// const front_end = process.env.REACT_APP_DEV_URL
+const front_end = 'https://btd-test-server.herokuapp.com'
+
+// const backend_end = process.env.SERVER_DEV_URL
+const backend_end = 'https://btd-test-web.netlify.com'
 const redirect_uri = `${backend_end}/spotify/callback` // Or Your redirect uri
 
 const generateRandomString = function(length) {
