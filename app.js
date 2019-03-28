@@ -62,23 +62,20 @@ app.use(function(err, req, res, next) {
   })
 })
 
-const MONGO_USER = 'nathan'
-const MONGO_PASSWORD = '6LAxorqA7aYIOtnt'
-const MONGO_DB = 'btd-dev'
-
 mongoose
   .connect(
-    `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@btd-bmpuu.mongodb.net/${MONGO_DB}?retryWrites=true`
+    `mongodb+srv://${process.env.MONGO_USER}:${
+      process.env.MONGO_PASSWORD
+    }@btd-bmpuu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`
   )
   .then(() => {
-    app
-      .listen(process.env.PORT || 4000)
-      .then(({ url }) => {
-        console.log(`Server ready at ${url}`)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    app.listen(process.env.PORT || 4000)
+    // .then(({ url }) => {
+    //   console.log(`Server ready at ${url}`)
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // })
   })
   .catch(err => {
     console.log(err)
