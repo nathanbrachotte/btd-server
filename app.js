@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const createError = require('http-errors')
 const express = require('express')
 const cors = require('cors')
@@ -9,26 +11,23 @@ const graphqlHttp = require('express-graphql')
 const mongoose = require('mongoose')
 
 const isAuth = require('./middleware/is-auth')
-
 const graphqlSchema = require('./graphql/schema/index')
 const graphqlResolvers = require('./graphql/resolvers/index')
-// const indexRouter = require('./routes/index');
-// const usersRouter = require('./routes/users');
 const spotifyRouter = require('./routes/spotify-auth')
 
 const app = express()
+console.log(app.settings.env)
 
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 app.use(express.static(path.join(__dirname, 'public')))
-
-// app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(cors())
 app.use(isAuth)
 
+// app.use(express.urlencoded({ extended: false }));
 // app.use('/', indexRouter);
 
 app.use(
@@ -62,22 +61,14 @@ app.use(function(err, req, res, next) {
   })
 })
 
-const MONGO_USER = 'nathan'
-const MONGO_PASSWORD = '6LAxorqA7aYIOtnt'
-const MONGO_DB = 'btd-dev'
-
 mongoose
   .connect(
-    `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@btd-bmpuu.mongodb.net/${MONGO_DB}?retryWrites=true`
+    `mongodb+srv://${process.env.MONGO_USER}:${
+      process.env.MONGO_PASSWORD
+    }@btd-bmpuu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`
   )
   .then(() => {
     app.listen(process.env.PORT || 4000)
-    // .then(({ url }) => {
-    //   console.log(`Server ready at ${url}`)
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // })
   })
   .catch(err => {
     console.log(err)
