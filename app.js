@@ -59,7 +59,9 @@ app.use(function(err, req, res, next) {
     status,
   })
 })
-
+console.log(process.env.MONGO_USER)
+console.log(process.env.MONGO_PASSWORD)
+console.log(process.env.MONGO_DB)
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${
