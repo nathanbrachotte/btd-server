@@ -46,6 +46,22 @@ module.exports = {
         expiresIn: '30 days',
       }
     )
-    return { userId: user.id, token: token, tokenExpiration: 1 }
+    return { userId: user.id, token: token, tokenExpiration: 30 * 24 * 3600 }
   },
 }
+
+/*
+query {
+      login(email: "${emailText}", password: "${passwordText}") {
+        userId,
+        token,
+        tokenExpiration
+      }
+}
+  mutation {
+  createUser(userInput:{email: "${emailText}", password: "${passwordText}", username:"${usernameText}"}) {
+    _id,
+    email
+  }
+}
+*/

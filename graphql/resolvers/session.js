@@ -17,9 +17,9 @@ module.exports = {
     if (!req.isAuth) {
       throw new Error('Unauthentificated')
     }
-    console.log({ args: JSON.stringify(args.sessionInput.createdAt, null, 2) })
+    // console.log({ args: JSON.stringify(args.sessionInput.createdAt, null, 2) })
     const createdAt = new Date(args.sessionInput.createdAt)
-    console.log({ createdAt })
+    // console.log({ createdAt })
     const session = new Session({
       host: req.userId,
       name: args.sessionInput.name,
@@ -33,7 +33,7 @@ module.exports = {
       .save()
       .then(result => {
         createdSession = transformSession(result)
-        console.log({ createdSession })
+        // console.log({ createdSession })
         return User.findById(req.userId)
       })
       .then(user => {
@@ -53,3 +53,43 @@ module.exports = {
       })
   },
 }
+
+/*
+EXAMPLES:
+   mutation {
+    createSession(sessionInput:{
+      host: "${user.userId}",
+      name: "${sessionName}",
+      songs: [],
+      guests: ["${user.userId}"],
+      createdAt: ${Date.now()}
+      })
+      {
+      _id
+      host {
+        _id
+        username
+      }
+      guests
+      name
+    }
+  }
+  
+  subscription {
+    sessionUpdated (where: {
+      mutation_in: [CREATED, UPDATED]
+      updatedFields_contains_some: [guests, songs]
+    }) {
+      mutation
+      updatedFields
+      node {
+        songs
+        guests
+      }
+      previousValues {
+        songs
+        guests
+      }
+  }
+}
+*/

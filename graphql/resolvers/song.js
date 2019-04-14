@@ -1,5 +1,5 @@
-
 const Song = require('../../models/song')
+const Session = require('../../models/session')
 const { dateToString } = require('../../helpers/date')
 const { transformSong, transformSession } = require('./merge')
 
@@ -17,27 +17,33 @@ module.exports = {
         return transformSong(song)
       })
     } catch (err) {
-      throw err;
+      throw err
     }
   },
-  addSong: async (args, req) => {
+  addSongToSession: async (args, req) => {
     if (!req.isAuth) {
       throw new Error('Unauthenticated')
     }
     try {
-      const fetchedSession = await Session.findOne({ _id: args.sessionId })
+      const fetchedSession = await Session.findOne({
+        _id: args.songInput.sessionId,
+      })
       const song = new Song({
         user: req.userId,
         session: fetchedSession,
-        spotifyId: 'spotifyId',
-        name: 'namespotify',
-        artist: 'artistspotify',
+        spotifyId: args.songInput.spotifyId,
+        name: args.songInput.name,
+        artist: args.songInput.artist,
+        vote: 0,
       })
       const result = await song.save()
-      //console.log(result._doc)
-      return transformSong(result)
+      const resultSessionPush = await fetchedSession.songs.push(result)
+      const resultSave = await fetchedSession.save()
+      // console.log(JSON.stringify(resultSave))
+      // return transformXSong(result)
+      return transformSession(resultSave)
     } catch (err) {
-      throw err;
+      throw err
     }
   },
   deleteSong: async (args, req) => {
@@ -53,7 +59,7 @@ module.exports = {
       await Song.deleteOne({ _id: args.songId })
       return session
     } catch (err) {
-      throw err;
+      throw err
     }
-  }
+  },
 }

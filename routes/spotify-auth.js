@@ -51,19 +51,19 @@ router.get('/login', function(req, res) {
     redirect_uri: redirect_uri,
     state: state,
   })
-  console.log({ body, state })
+  // console.log({ body, state })
   res.redirect('https://accounts.spotify.com/authorize?' + body)
 })
 
 router.get('/callback', function(req, res) {
-  console.log('callback')
+  // console.log('callback')
   // your application requests refresh and access tokens
   // after checking the state parameter
 
   var code = req.query.code || null
   var state = req.query.state || null
   var storedState = req.cookies ? req.cookies[stateKey] : null
-  console.log({ storedState, state, req, res })
+  // console.log({ storedState, state, req, res })
   if (state === null || state !== storedState) {
     res.redirect(
       '/#' +
@@ -101,12 +101,12 @@ router.get('/callback', function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          console.log(body)
+          // console.log(body)
         })
         //TODO: HERE HANDLE CASE WHERE USER IS NOT PREMIUM
         // we can also pass the token to the browser to make requests from there
         //http://localhost:3000/callback?code=AQCVlcFzUQfpCwGW960Nz8Hk_LuNqOloEtrjnLAzWzoAFrLWvFGQypaTb7-EA459_7auVWlNGAn7MbhW8wqgL2e8mm-5oUWbAZcIyuMjCf6BM0mKXwAL7BhI2OeYnskte5ctA8tlHG5TSdROmwpBtr8HK2Lxz7osO2eXbDlKna62PZEFZiHiyBofyRTx79Zjj2NawDk4NFHhvqhGSrwWwdvnHX5eLPtHP28Dn2OvNpUaCp_bR3zl9sEHedo7aFRgZ-vzNcssy8Gh7BBajG18_8H2vM4&state=fFX1ymT8i9cEMpSL
-        console.log(access_token, refresh_token)
+        // console.log(access_token, refresh_token)
         res.redirect(
           `${front_end}/spotify-success?` +
             querystring.stringify({
@@ -129,7 +129,7 @@ router.get('/callback', function(req, res) {
 router.get('/refresh_token', function(req, res) {
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token
-  console.log(refresh_token)
+  // console.log(refresh_token)
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: {
@@ -145,7 +145,7 @@ router.get('/refresh_token', function(req, res) {
   }
 
   request.post(authOptions, function(error, response, body) {
-    console.log({ error, response, body })
+    // console.log({ error, response, body })
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token
       res.send({

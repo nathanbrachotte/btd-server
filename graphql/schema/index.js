@@ -9,6 +9,7 @@ module.exports = buildSchema(`
       spotifyId: String!
       name: String!
       artist: String!
+      vote: Int!
       createdAt: String!
       updatedAt: String!
     }
@@ -31,7 +32,7 @@ module.exports = buildSchema(`
       _id: ID!
       host: User!
       name: String!
-      songs: [String!]
+      songs: [Song!]!
       guests: [String!]!
       createdAt: String!
     }
@@ -50,6 +51,18 @@ module.exports = buildSchema(`
       username: String!
     }
     
+    input SongInput {
+      sessionId: ID!
+      spotifyId: String!
+      name: String!
+      artist: String!
+    }
+
+    input SessionSubscriptionWhereInput {
+      mutation_in: [UPDATED]
+      updatedFields_contains_some: [guests, songs]
+    }
+    
     type RootQuery {
       sessions: [Session!]!
       songs: [Song!]!
@@ -59,12 +72,17 @@ module.exports = buildSchema(`
     type RootMutation {
       createSession(sessionInput: SessionInput): Session
       createUser(userInput: UserInput): User
-      addSong(sessionId: ID!) : Song!
+      addSongToSession(songInput: SongInput) : Session!
       deleteSong(songId: ID!) : Session!
+    }
+
+    type RootSubscription {
+      sessionUpdated(where: SessionSubscriptionWhereInput): Session
     }
     
     schema {
       query: RootQuery
       mutation: RootMutation
+      subscription: RootSubscription
     }
   `)
