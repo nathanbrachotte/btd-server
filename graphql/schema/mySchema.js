@@ -58,10 +58,6 @@ module.exports = buildSchema(`
       artist: String!
     }
 
-    input SessionSubscriptionWhereInput {
-      mutation_in: [UPDATED]
-      updatedFields_contains_some: [guests, songs]
-    }
     
     type RootQuery {
       sessions: [Session!]!
@@ -76,13 +72,14 @@ module.exports = buildSchema(`
       deleteSong(songId: ID!) : Session!
     }
 
-    type RootSubscription {
-      sessionUpdated(where: SessionSubscriptionWhereInput): Session
-    }
     
     schema {
       query: RootQuery
       mutation: RootMutation
-      subscription: RootSubscription
     }
   `)
+
+// input SessionSubscriptionWhereInput {
+//       mutation_in: [UPDATED]
+//       updatedFields_contains_some: [guests, songs]
+//     }

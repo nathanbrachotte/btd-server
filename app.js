@@ -11,17 +11,18 @@ const graphqlHttp = require('express-graphql')
 const mongoose = require('mongoose')
 
 const isAuth = require('./middleware/is-auth')
-const graphqlSchema = require('./graphql/schema/index')
+const graphqlSchema = require('./graphql/schema/mySchema')
 const graphqlResolvers = require('./graphql/resolvers/index')
 const spotifyRouter = require('./routes/spotify-auth')
 
 const app = express()
 console.log(app.settings.env)
 
-app.use(logger('dev'))
-app.use(bodyParser.json())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
+
+app.use(logger('dev'))
+app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(cookieParser())
 app.use(cors())
@@ -61,6 +62,13 @@ app.use(function(err, req, res, next) {
   })
 })
 
+const http = require('http')
+const { execute, subscribe } = require('graphql')
+const subscriptionsTransportWs = require('subscriptions-transport-ws')
+
+const SubscriptionServer = subscriptionsTransportWs.SubscriptionServer
+const server = http.createServer(app)
+
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${
@@ -68,7 +76,26 @@ mongoose
     }@btd-bmpuu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`
   )
   .then(() => {
-    app.listen(process.env.PORT || 4000)
+    // app.listen(process.env.PORT || 4000)
+
+    const PORT = process.env.PORT || 4000
+
+    server.listen(PORT, () => {
+      new SubscriptionServer(
+        {
+          execute,
+          subscribe,
+          schema: graphqlSchema,
+        },
+        {
+          server,
+          path: '/subscriptions',
+        }
+      )
+      console.log(
+        `GraphQL Server is now running on http://localhost:${PORT}/graphql`
+      )
+    })
   })
   .catch(err => {
     console.log(err)
