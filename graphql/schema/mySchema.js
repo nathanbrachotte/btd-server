@@ -72,6 +72,11 @@ module.exports = buildSchema(`
       deleteSong(songId: ID!) : Session!
     }
 
+    type Subscription {
+      newSongAdded(songInput: SongInput) : Session!
+      sessionUpdate() : Session!
+      sessionOver() : Session!
+    }
     
     schema {
       query: RootQuery
