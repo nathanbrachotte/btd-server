@@ -62,25 +62,24 @@ module.exports = buildSchema(`
     type RootQuery {
       sessions: [Session!]!
       songs: [Song!]!
-      login(email: String!, password: String!): AuthData!
     }
     
     type RootMutation {
       createSession(sessionInput: SessionInput): Session
       createUser(userInput: UserInput): User
-      addSongToSession(songInput: SongInput) : Session!
-      deleteSong(songId: ID!) : Session!
+      addSongToSession(songInput: SongInput): Session!
+      deleteSong(songId: ID!): Session!
+      login(email: String!, password: String!): AuthData!
     }
 
     type Subscription {
-      newSongAdded(songInput: SongInput) : Session!
-      sessionUpdate() : Session!
-      sessionOver() : Session!
+      newSongAdded: Song
     }
     
     schema {
       query: RootQuery
       mutation: RootMutation
+      subscription: Subscription
     }
   `)
 

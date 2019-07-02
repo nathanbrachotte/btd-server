@@ -2,6 +2,7 @@ const Song = require('../../models/song')
 const Session = require('../../models/session')
 const { dateToString } = require('../../helpers/date')
 const { transformSong, transformSession } = require('./merge')
+const { pubsub, ACTIONS } = require('./pubsub')
 
 module.exports = {
   songs: async (args, req) => {
@@ -37,8 +38,12 @@ module.exports = {
         vote: 0,
       })
       const result = await song.save()
+
       const resultSessionPush = await fetchedSession.songs.push(result)
       const resultSave = await fetchedSession.save()
+      console.log('here')
+      pubsub.publish(ACTIONS.SONG_ADDED, { newSongAdded: { song: result } })
+      console.log('there')
       // console.log(JSON.stringify(resultSave))
       // return transformXSong(result)
       return transformSession(resultSave)

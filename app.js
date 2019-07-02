@@ -62,12 +62,12 @@ app.use(function(err, req, res, next) {
   })
 })
 
-const http = require('http')
-const { execute, subscribe } = require('graphql')
-const subscriptionsTransportWs = require('subscriptions-transport-ws')
+// const http = require('http')
+// const { execute, subscribe } = require('graphql')
+// const subscriptionsTransportWs = require('subscriptions-transport-ws')
 
-const SubscriptionServer = subscriptionsTransportWs.SubscriptionServer
-const server = http.createServer(app)
+// const SubscriptionServer = subscriptionsTransportWs.SubscriptionServer
+// const server = http.createServer(app)
 
 mongoose
   .connect(
@@ -80,21 +80,22 @@ mongoose
 
     const PORT = process.env.PORT || 4000
 
-    server.listen(PORT, () => {
-      new SubscriptionServer(
-        {
-          execute,
-          subscribe,
-          schema: graphqlSchema,
-        },
-        {
-          server,
-          path: '/subscriptions',
-        }
-      )
-      console.log(
-        `GraphQL Server is now running on http://localhost:${PORT}/graphql`
-      )
+    app.listen(PORT, () => {
+      // new SubscriptionServer(
+      //   {
+      //     execute,
+      //     subscribe,
+      //     schema: graphqlSchema,
+      //   },
+      //   {
+      //     server,
+      //     path: '/subscriptions',
+      //   }
+      // )
+      // console.log(
+      //   `GraphQL Server is now running on http://localhost:${PORT}/graphql`
+      // )
+      console.log(`listening at http://localhost:${PORT}`)
     })
   })
   .catch(err => {
