@@ -53,7 +53,6 @@ module.exports = buildSchema(`
     type RootQuery {
       sessions: [Session!]!
       songs: [Song!]!
-      login(email: String!, password: String!): AuthData!
     }
     
     type RootMutation {
@@ -61,6 +60,7 @@ module.exports = buildSchema(`
       createUser(userInput: UserInput): User
       addSong(sessionId: ID!) : Song!
       deleteSong(songId: ID!) : Session!
+      login(email: String!, password: String!): AuthData!
     }
     
     schema {

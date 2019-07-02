@@ -67,6 +67,7 @@ mongoose.connect(
   { useNewUrlParser: true }
 )
   .then(() => {
+    console.log(`server listening on port ${process.env.PORT || 4000}`)
     app.listen(process.env.PORT || 4000)
   })
   .catch(err => {
