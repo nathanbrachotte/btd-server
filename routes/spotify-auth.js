@@ -26,7 +26,7 @@ const backend_end = process.env.SERVER_DEV_URL
 
 const redirect_uri = `${backend_end}/spotify/callback` // Or Your redirect uri
 
-const generateRandomString = function(length) {
+const generateRandomString = function (length) {
   var text = ''
   var possible =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -37,7 +37,7 @@ const generateRandomString = function(length) {
   return text
 }
 
-router.get('/login', function(req, res) {
+router.get('/login', function (req, res) {
   var state = generateRandomString(16)
   res.cookie(stateKey, state)
 
@@ -49,13 +49,13 @@ router.get('/login', function(req, res) {
     client_id: client_id,
     scope: scope,
     redirect_uri: redirect_uri,
-    state: state,
+    state: state
   })
   console.log({ body, state })
   res.redirect('https://accounts.spotify.com/authorize?' + body)
 })
 
-router.get('/callback', function(req, res) {
+router.get('/callback', function (req, res) {
   console.log('callback')
   // your application requests refresh and access tokens
   // after checking the state parameter
@@ -68,7 +68,7 @@ router.get('/callback', function(req, res) {
     res.redirect(
       '/#' +
         querystring.stringify({
-          error: 'state_mismatch',
+          error: 'state_mismatch'
         })
     )
   } else {
@@ -78,47 +78,48 @@ router.get('/callback', function(req, res) {
       form: {
         code: code,
         redirect_uri: redirect_uri,
-        grant_type: 'authorization_code',
+        grant_type: 'authorization_code'
       },
       headers: {
         Authorization:
           'Basic ' +
-          new Buffer(client_id + ':' + client_secret).toString('base64'),
+          new Buffer(client_id + ':' + client_secret).toString('base64')
       },
-      json: true,
+      json: true
     }
 
-    request.post(authOptions, function(error, response, body) {
+    request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
-        var access_token = body.access_token,
-          refresh_token = body.refresh_token
+        var access_token = body.access_token
+
+        var refresh_token = body.refresh_token
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { Authorization: 'Bearer ' + access_token },
-          json: true,
+          json: true
         }
 
         // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
+        request.get(options, function (error, response, body) {
           console.log(body)
         })
-        //TODO: HERE HANDLE CASE WHERE USER IS NOT PREMIUM
+        // TODO: HERE HANDLE CASE WHERE USER IS NOT PREMIUM
         // we can also pass the token to the browser to make requests from there
-        //http://localhost:3000/callback?code=AQCVlcFzUQfpCwGW960Nz8Hk_LuNqOloEtrjnLAzWzoAFrLWvFGQypaTb7-EA459_7auVWlNGAn7MbhW8wqgL2e8mm-5oUWbAZcIyuMjCf6BM0mKXwAL7BhI2OeYnskte5ctA8tlHG5TSdROmwpBtr8HK2Lxz7osO2eXbDlKna62PZEFZiHiyBofyRTx79Zjj2NawDk4NFHhvqhGSrwWwdvnHX5eLPtHP28Dn2OvNpUaCp_bR3zl9sEHedo7aFRgZ-vzNcssy8Gh7BBajG18_8H2vM4&state=fFX1ymT8i9cEMpSL
+        // http://localhost:3000/callback?code=AQCVlcFzUQfpCwGW960Nz8Hk_LuNqOloEtrjnLAzWzoAFrLWvFGQypaTb7-EA459_7auVWlNGAn7MbhW8wqgL2e8mm-5oUWbAZcIyuMjCf6BM0mKXwAL7BhI2OeYnskte5ctA8tlHG5TSdROmwpBtr8HK2Lxz7osO2eXbDlKna62PZEFZiHiyBofyRTx79Zjj2NawDk4NFHhvqhGSrwWwdvnHX5eLPtHP28Dn2OvNpUaCp_bR3zl9sEHedo7aFRgZ-vzNcssy8Gh7BBajG18_8H2vM4&state=fFX1ymT8i9cEMpSL
         console.log(access_token, refresh_token)
         res.redirect(
           `${front_end}/spotify-success?` +
             querystring.stringify({
               access_token: access_token,
-              refresh_token: refresh_token,
+              refresh_token: refresh_token
             })
         )
       } else {
         res.redirect(
           '/#' +
             querystring.stringify({
-              error: 'invalid_token',
+              error: 'invalid_token'
             })
         )
       }
@@ -126,7 +127,7 @@ router.get('/callback', function(req, res) {
   }
 })
 
-router.get('/refresh_token', function(req, res) {
+router.get('/refresh_token', function (req, res) {
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token
   console.log(refresh_token)
@@ -135,21 +136,21 @@ router.get('/refresh_token', function(req, res) {
     headers: {
       Authorization:
         'Basic ' +
-        new Buffer(client_id + ':' + client_secret).toString('base64'),
+        new Buffer(client_id + ':' + client_secret).toString('base64')
     },
     form: {
       grant_type: 'refresh_token',
-      refresh_token: refresh_token,
+      refresh_token: refresh_token
     },
-    json: true,
+    json: true
   }
 
-  request.post(authOptions, function(error, response, body) {
+  request.post(authOptions, function (error, response, body) {
     console.log({ error, response, body })
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token
       res.send({
-        access_token: access_token,
+        access_token: access_token
       })
     }
   })

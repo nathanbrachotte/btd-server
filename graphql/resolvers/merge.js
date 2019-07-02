@@ -4,14 +4,14 @@ const User = require('../../models/user')
 const { dateToString } = require('../../helpers/date')
 
 const sessions = sessionIds => {
-  return Session.find({ _id: { $in: sessionIds } }).
-    then(sessions => {
+  return Session.find({ _id: { $in: sessionIds } })
+    .then(sessions => {
       return sessions.map(session => {
         return transformSession(session)
       })
     })
     .catch(err => {
-      throw err;
+      throw err
     })
 }
 
@@ -20,13 +20,13 @@ const singleSession = async sessionId => {
     const session = await Session.findById(sessionId)
     return transformSession(session)
   } catch (err) {
-    throw err;
+    throw err
   }
 }
 
 const user = userId => {
-  return User.findById(userId).
-    then(user => {
+  return User.findById(userId)
+    .then(user => {
       // console.log(user)
       return {
         ...user._doc,
@@ -35,7 +35,7 @@ const user = userId => {
       }
     })
     .catch(err => {
-      throw err;
+      throw err
     })
 }
 
@@ -53,13 +53,12 @@ const transformSong = song => {
     ...song._doc,
     _id: song.id,
     user: user.bind(this, song._doc.user),
-    session: singleSession.bind(this, song._doc.session),
+    session: singleSession.bind(this, song._doc.session)
   }
 }
-
 
 // exports.user = user;
 // exports.sessions = sessions;
 // exports.singleSession = singleSession;
-exports.transformSession = transformSession;
-exports.transformSong = transformSong;
+exports.transformSession = transformSession
+exports.transformSong = transformSong

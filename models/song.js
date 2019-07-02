@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const songSchema = new Schema({
   session: {
@@ -14,16 +14,16 @@ const songSchema = new Schema({
   },
   spotifyId: {
     type: String,
-    required: true,
+    required: true
   },
   name: {
     type: String,
-    required: true,
+    required: true
   },
   artist: {
     type: String,
-    required: true,
-  },
-});
+    required: true
+  }
+})
 
-module.exports = mongoose.model('Song', songSchema);
+module.exports = mongoose.model('Song', songSchema)

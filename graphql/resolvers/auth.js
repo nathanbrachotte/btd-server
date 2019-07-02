@@ -17,7 +17,7 @@ module.exports = {
           email: args.userInput.email,
           password: hashedPassword,
           username: args.userInput.username,
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString()
         })
         return user.save()
       })
@@ -43,9 +43,9 @@ module.exports = {
       { userId: user.id, email: user.email },
       'somesupersecretkey',
       {
-        expiresIn: '1h',
+        expiresIn: '1h'
       }
     )
     return { userId: user.id, token: token, tokenExpiration: 1 }
-  },
+  }
 }

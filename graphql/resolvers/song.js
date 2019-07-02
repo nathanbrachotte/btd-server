@@ -17,7 +17,7 @@ module.exports = {
         return transformSong(song)
       })
     } catch (err) {
-      throw err;
+      throw err
     }
   },
   addSong: async (args, req) => {
@@ -31,20 +31,20 @@ module.exports = {
         session: fetchedSession,
         spotifyId: 'spotifyId',
         name: 'namespotify',
-        artist: 'artistspotify',
+        artist: 'artistspotify'
       })
       const result = await song.save()
-      //console.log(result._doc)
+      // console.log(result._doc)
       return transformSong(result)
     } catch (err) {
-      throw err;
+      throw err
     }
   },
   deleteSong: async (args, req) => {
     if (!req.isAuth) {
       throw new Error('Unauthenticated')
     }
-    //TODO: Check its the same user that created
+    // TODO: Check its the same user that created
     try {
       console.log(args.songId)
       const song = await Song.findById(args.songId).populate('session')
@@ -53,7 +53,7 @@ module.exports = {
       await Song.deleteOne({ _id: args.songId })
       return session
     } catch (err) {
-      throw err;
+      throw err
     }
   }
 }
