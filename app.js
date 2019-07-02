@@ -34,19 +34,19 @@ app.use(
   graphqlHttp({
     schema: graphqlSchema,
     rootValue: graphqlResolvers,
-    graphiql: true,
+    graphiql: true
   })
 )
 
 app.use('/spotify', spotifyRouter)
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404))
 })
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
@@ -56,18 +56,16 @@ app.use(function(err, req, res, next) {
   res.render('error', {
     title: 'Oops',
     message: res.locals.message + ' :(',
-    status,
+    status
   })
 })
 console.log(process.env.MONGO_USER)
 console.log(process.env.MONGO_PASSWORD)
 console.log(process.env.MONGO_DB)
-mongoose
-  .connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${
-      process.env.MONGO_PASSWORD
-    }@btd-bmpuu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`
-  )
+mongoose.connect(
+  `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@btd-bmpuu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`,
+  { useNewUrlParser: true }
+)
   .then(() => {
     app.listen(process.env.PORT || 4000)
   })
