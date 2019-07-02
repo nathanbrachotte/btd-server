@@ -16,8 +16,11 @@ const graphqlResolvers = require('./graphql/resolvers/index')
 const spotifyRouter = require('./routes/spotify-auth')
 
 const app = express()
+app.use(cors())
 console.log(app.settings.env)
 
+app.use(logger('dev'))
+app.use(bodyParser.json())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
@@ -25,7 +28,6 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(cookieParser())
-app.use(cors())
 app.use(isAuth)
 
 // app.use(express.urlencoded({ extended: false }));
@@ -69,6 +71,9 @@ app.use(function(err, req, res, next) {
 // const SubscriptionServer = subscriptionsTransportWs.SubscriptionServer
 // const server = http.createServer(app)
 
+console.log(process.env.MONGO_USER)
+console.log(process.env.MONGO_PASSWORD)
+console.log(process.env.MONGO_DB)
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${
