@@ -55,7 +55,7 @@ const transformSong = song => {
     ...song._doc,
     _id: song.id,
     user: user.bind(this, song._doc.user),
-    session: singleSession.bind(this, song._doc.session),
+    session: singleSession.bind(this, song._doc.session)
   }
 }
 

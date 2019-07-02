@@ -90,8 +90,9 @@ router.get('/callback', function(req, res) {
 
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
-        var access_token = body.access_token,
-          refresh_token = body.refresh_token
+        var access_token = body.access_token
+
+        var refresh_token = body.refresh_token
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
@@ -103,7 +104,7 @@ router.get('/callback', function(req, res) {
         request.get(options, function(error, response, body) {
           // console.log(body)
         })
-        //TODO: HERE HANDLE CASE WHERE USER IS NOT PREMIUM
+        // TODO: HERE HANDLE CASE WHERE USER IS NOT PREMIUM
         // we can also pass the token to the browser to make requests from there
         //http://localhost:3000/callback?code=AQCVlcFzUQfpCwGW960Nz8Hk_LuNqOloEtrjnLAzWzoAFrLWvFGQypaTb7-EA459_7auVWlNGAn7MbhW8wqgL2e8mm-5oUWbAZcIyuMjCf6BM0mKXwAL7BhI2OeYnskte5ctA8tlHG5TSdROmwpBtr8HK2Lxz7osO2eXbDlKna62PZEFZiHiyBofyRTx79Zjj2NawDk4NFHhvqhGSrwWwdvnHX5eLPtHP28Dn2OvNpUaCp_bR3zl9sEHedo7aFRgZ-vzNcssy8Gh7BBajG18_8H2vM4&state=fFX1ymT8i9cEMpSL
         // console.log(access_token, refresh_token)

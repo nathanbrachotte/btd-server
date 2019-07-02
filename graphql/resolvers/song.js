@@ -55,7 +55,7 @@ module.exports = {
     if (!req.isAuth) {
       throw new Error('Unauthenticated')
     }
-    //TODO: Check its the same user that created
+    // TODO: Check its the same user that created
     try {
       console.log(args.songId)
       const song = await Song.findById(args.songId).populate('session')

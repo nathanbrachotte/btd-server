@@ -25,7 +25,7 @@ module.exports = {
       name: args.sessionInput.name,
       songs: args.sessionInput.songs,
       guests: args.sessionInput.guests,
-      createdAt,
+      createdAt
     })
     // console.log({ session })
     let createdSession
@@ -51,7 +51,7 @@ module.exports = {
         console.log(err)
         throw err
       })
-  },
+  }
 }
 
 /*

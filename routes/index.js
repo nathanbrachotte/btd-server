@@ -11,12 +11,10 @@
 //   // db.close()
 // })
 
-
 // /* GET home page. */
 // app.get('/', function (req, res, next) {
 //   res.render('index', { title: 'Express' });
 // });
-
 
 // // const middleware1 = function (req, res, next) {
 // //   console.log('CB0')
