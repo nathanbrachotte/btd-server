@@ -106,7 +106,7 @@ router.get('/callback', function(req, res) {
         })
         // TODO: HERE HANDLE CASE WHERE USER IS NOT PREMIUM
         // we can also pass the token to the browser to make requests from there
-        //http://localhost:3000/callback?code=AQCVlcFzUQfpCwGW960Nz8Hk_LuNqOloEtrjnLAzWzoAFrLWvFGQypaTb7-EA459_7auVWlNGAn7MbhW8wqgL2e8mm-5oUWbAZcIyuMjCf6BM0mKXwAL7BhI2OeYnskte5ctA8tlHG5TSdROmwpBtr8HK2Lxz7osO2eXbDlKna62PZEFZiHiyBofyRTx79Zjj2NawDk4NFHhvqhGSrwWwdvnHX5eLPtHP28Dn2OvNpUaCp_bR3zl9sEHedo7aFRgZ-vzNcssy8Gh7BBajG18_8H2vM4&state=fFX1ymT8i9cEMpSL
+        // http://localhost:3000/callback?code=AQCVlcFzUQfpCwGW960Nz8Hk_LuNqOloEtrjnLAzWzoAFrLWvFGQypaTb7-EA459_7auVWlNGAn7MbhW8wqgL2e8mm-5oUWbAZcIyuMjCf6BM0mKXwAL7BhI2OeYnskte5ctA8tlHG5TSdROmwpBtr8HK2Lxz7osO2eXbDlKna62PZEFZiHiyBofyRTx79Zjj2NawDk4NFHhvqhGSrwWwdvnHX5eLPtHP28Dn2OvNpUaCp_bR3zl9sEHedo7aFRgZ-vzNcssy8Gh7BBajG18_8H2vM4&state=fFX1ymT8i9cEMpSL
         // console.log(access_token, refresh_token)
         res.redirect(
           `${front_end}/spotify-success?` +
