@@ -15,7 +15,7 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true, //TODO: Handle error with username being created are the same
   },
   firstName: {
     type: String,

@@ -7,6 +7,7 @@ module.exports = {
   createUser: args => {
     return User.findOne({ email: args.userInput.email })
       .then(user => {
+        console.log({ user })
         if (user) {
           throw new Error('User exists already')
         }
@@ -26,17 +27,19 @@ module.exports = {
         return { ...res._doc, password: null }
       })
       .catch(err => {
+        console.log({ err })
         throw err
       })
   },
   login: async ({ email, password }) => {
-    console.log('signin')
     const user = await User.findOne({ email: email })
     if (!user) {
+      console.log('No User found')
       throw new Error('User does not exist!')
     }
     const isEqual = await bcrypt.compare(password, user.password)
     if (!isEqual) {
+      console.log('Password is wrong')
       throw new Error('Password is incorrect!')
     }
     const token = jwt.sign(

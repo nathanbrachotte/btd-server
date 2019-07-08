@@ -25,7 +25,7 @@ module.exports = {
       name: args.sessionInput.name,
       songs: args.sessionInput.songs,
       guests: args.sessionInput.guests,
-      createdAt,
+      createdAt: new Date().toISOString(),
     })
     // console.log({ session })
     let createdSession

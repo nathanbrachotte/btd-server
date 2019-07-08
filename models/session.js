@@ -5,27 +5,27 @@ const Schema = mongoose.Schema
 const sessionSchema = new Schema({
   host: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   songs: {
     type: Array,
-    required: true
+    required: true,
   },
   guests: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
+      ref: 'User',
+    },
   ],
   createdAt: {
     type: Date,
-    required: true
-  }
+    required: true,
+  },
 })
 
 module.exports = mongoose.model('Session', sessionSchema)

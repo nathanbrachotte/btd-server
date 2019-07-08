@@ -38,11 +38,10 @@ module.exports = buildSchema(`
     }
 
     input SessionInput {
-      host: String!
+      host: ID!
       name: String!
       songs: [String!]!
       guests: [String!]!
-      createdAt: Float!
     }
 
     input UserInput {
