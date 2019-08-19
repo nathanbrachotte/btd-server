@@ -129,8 +129,9 @@ router.get('/callback', function(req, res) {
 
 router.get('/refresh_token', function(req, res) {
   // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token
-  // console.log(refresh_token)
+  const { refresh_token } = req.query
+  console.log(refresh_token)
+
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: {
