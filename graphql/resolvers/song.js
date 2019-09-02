@@ -42,7 +42,7 @@ module.exports = {
       const resultSessionPush = await fetchedSession.songs.push(result)
       const resultSave = await fetchedSession.save()
       console.log('here')
-      pubsub.publish(ACTIONS.SONG_ADDED, { newSongAdded: { song: result } })
+      // pubsub.publish(ACTIONS.SONG_ADDED, { newSongAdded: { song: result } })
       console.log('there')
       // console.log(JSON.stringify(resultSave))
       // return transformXSong(result)
