@@ -51,6 +51,7 @@ const transformSession = session => {
 }
 
 const transformSong = song => {
+  // console.log({ song: song._doc })
   return {
     ...song._doc,
     _id: song.id,
@@ -59,8 +60,5 @@ const transformSong = song => {
   }
 }
 
-// exports.user = user;
-// exports.sessions = sessions;
-// exports.singleSession = singleSession;
 exports.transformSession = transformSession
 exports.transformSong = transformSong
