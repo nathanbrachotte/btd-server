@@ -12,6 +12,7 @@ module.exports = buildSchema(`
       vote: Int!
       createdAt: String!
       updatedAt: String!
+      duration: Int!
     }
 
     type User {
@@ -55,6 +56,7 @@ module.exports = buildSchema(`
       spotifyId: String!
       name: String!
       artist: String!
+      duration: Int!
     }
 
     

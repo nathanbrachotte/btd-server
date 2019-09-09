@@ -29,6 +29,11 @@ const songSchema = new Schema({
     required: true,
     default: 0,
   },
+  duration: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 })
 
 module.exports = mongoose.model('Song', songSchema)

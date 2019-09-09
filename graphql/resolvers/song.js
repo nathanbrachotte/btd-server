@@ -35,6 +35,7 @@ module.exports = {
         spotifyId: args.songInput.spotifyId,
         name: args.songInput.name,
         artist: args.songInput.artist,
+        duration: args.songInput.duration,
         vote: 0,
       })
       const result = await song.save()
