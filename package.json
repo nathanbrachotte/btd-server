@@ -6,6 +6,7 @@
     "start": "nodemon app.js"
   },
   "dependencies": {
+    "apollo-server": "^2.4.8",
     "apollo-server-express": "^2.4.8",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.4",
@@ -15,6 +16,7 @@
     "express": "~4.16.0",
     "express-graphql": "^0.7.1",
     "graphql": "^14.2.1",
+    "graphql-server-express": "^1.4.0",
     "graphql-subscriptions": "^1.1.0",
     "http": "^0.0.0",
     "http-errors": "~1.6.2",

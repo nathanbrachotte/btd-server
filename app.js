@@ -1,23 +1,61 @@
 require('dotenv').config()
 
-const createError = require('http-errors')
 const express = require('express')
-const cors = require('cors')
+const { ApolloServer, gql } = require('apollo-server-express')
+
+const mongoose = require('mongoose')
+
 const path = require('path')
+const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
-const graphqlHttp = require('express-graphql')
-const mongoose = require('mongoose')
 
 const isAuth = require('./middleware/is-auth')
-const graphqlSchema = require('./graphql/schema/mySchema')
-const graphqlResolvers = require('./graphql/resolvers/index')
-const spotifyRouter = require('./routes/spotify-auth')
+
+const port = process.env.PORT || 4000
+const typeDefs = require('./graphql/schema/mySchema')
+const resolvers = require('./graphql/resolvers/index')
+console.log({ typeDefs, resolvers })
+
+// // Construct a schema, using GraphQL schema language
+// const typeDefs = gql`
+//   type Query {
+//     hello: String
+//   }
+// `
+
+// // Provide resolver functions for your schema fields
+// const resolvers = {
+//   Query: {
+//     hello: () => 'Hello world!',
+//   },
+// }
+
+// const server = new ApolloServer({
+//   typeDefs,
+//   resolvers,
+//   subscriptions: {
+//     onConnect: (connectionParams, webSocket) => {
+//       console.log(connectionParams, webSocket)
+//       console.log('connected 🎉🎉🎉🎉🎉')
+//       return true
+//       // if (connectionParams.authToken) {
+//       //   return validateToken(connectionParams.authToken)
+//       //     .then(findUser(connectionParams.authToken))
+//       //     .then(user => {
+//       //       return {
+//       //         currentUser: user,
+//       //       }
+//       //     })
+//       // }
+
+//       // throw new Error('Missing auth token!')
+//     },
+//   },
+// })
 
 const app = express()
-console.log(app.settings.env)
-
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
@@ -28,46 +66,42 @@ app.use(cookieParser())
 app.use(cors())
 app.use(isAuth)
 
-// app.use(express.urlencoded({ extended: false }));
-// app.use('/', indexRouter);
+const server = createServer(app)
+
+// server.applyMiddleware({ app })
+
+const { execute, subscribe } = require('graphql')
+const { createServer } = require('http')
+const { SubscriptionServer } = require('subscriptions-transport-ws')
+const { graphqlExpress, graphiqlExpress } = require('graphql-server-express')
 
 app.use(
-  '/graphql',
-  graphqlHttp({
-    schema: graphqlSchema,
-    rootValue: graphqlResolvers,
-    graphiql: true,
-  })
+  graphqlEndpoint,
+  bodyParser.json(),
+  fileMiddleware,
+  graphqlExpress(req => ({
+    schema,
+    context: {
+      models,
+      user: req.user,
+      SECRET,
+      SECRET2,
+      channelLoader: new DataLoader(ids =>
+        channelBatcher(ids, models, req.user)
+      ),
+      userLoader: new DataLoader(ids => userBatcher(ids, models)),
+      serverUrl: `${req.protocol}://${req.get('host')}`,
+    },
+  }))
 )
 
-app.use('/spotify', spotifyRouter)
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404))
-})
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
-  // render the error page
-  const status = err.status || 500
-  res.status(status)
-  res.render('error', {
-    title: 'Oops',
-    message: res.locals.message + ' :(',
-    status,
+app.use(
+  '/graphiql',
+  graphiqlExpress({
+    endpointURL: '/graphql',
+    subscriptionsEndpoint: `ws://localhost:4000/subscriptions`,
   })
-})
-
-const http = require('http')
-const { execute, subscribe } = require('graphql')
-const subscriptionsTransportWs = require('subscriptions-transport-ws')
-
-const SubscriptionServer = subscriptionsTransportWs.SubscriptionServer
-const server = http.createServer(app)
+)
 
 mongoose
   .connect(
@@ -76,26 +110,40 @@ mongoose
     }@btd-bmpuu.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`
   )
   .then(() => {
-    // app.listen(process.env.PORT || 4000)
+    server.listen(port, () => {
+      console.log(`GraphQL Server is now running on http://localhost:${port}`)
+      // Set up the WebSocket for handling GraphQL subscriptions
+      new SubscriptionServer({
+        execute,
+        subscribe,
+        schema: typeDefs,
+        onConnect: async ({ token, refreshToken }, webSocket) => {
+          console.log('COUCOU')
+          if (token && refreshToken) {
+            try {
+              const { user } = jwt.verify(token, SECRET)
+              return { models, user }
+            } catch (err) {
+              const newTokens = await refreshTokens(
+                token,
+                refreshToken,
+                models,
+                SECRET,
+                SECRET2
+              )
+              return { models, user: newTokens.user }
+            }
+          }
 
-    const PORT = process.env.PORT || 4000
-
-    server.listen(PORT, () => {
-      new SubscriptionServer(
-        {
-          execute,
-          subscribe,
-          schema: graphqlSchema,
+          return { models }
         },
-        {
-          server,
-          path: '/subscriptions',
-        }
-      )
-      console.log(
-        `GraphQL Server is now running on http://localhost:${PORT}/graphql`
-      )
+      })
     })
+    // app.listen({ port }, () =>
+    //   console.log(
+    //     `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
+    //   )
+    // )
   })
   .catch(err => {
     console.log(err)
