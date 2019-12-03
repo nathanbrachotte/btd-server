@@ -43,7 +43,7 @@ router.get('/login', function(req, res) {
 
   // your application requests authorization
   var scope =
-    'user-read-private user-read-email user-read-playback-state playlist-read-private user-modify-playback-state app-remote-control user-read-birthdate streaming'
+    'user-read-private user-read-email user-read-playback-state playlist-read-private user-modify-playback-state app-remote-control user-read-birthdate streaming playlist-modify-public playlist-modify-private'
   const body = querystring.stringify({
     response_type: 'code',
     client_id: client_id,
