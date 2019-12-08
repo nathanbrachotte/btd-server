@@ -18,7 +18,7 @@
     "http-errors": "~1.7.3",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.7",
-    "mongoose": "^5.6.2",
+    "mongoose": "^5.7.5",
     "morgan": "~1.9.1",
     "pug": "2.0.4",
     "querystring": "^0.2.0",
