@@ -66,4 +66,21 @@ module.exports = {
       throw err
     }
   },
+  upVoteSong: async (args, req) => {
+    console.log('HEY THEEERE', args)
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated')
+    }
+    // TODO: Check its the same user that created
+    try {
+      const song = await Song.findById(args.songId).populate('session')
+      console.log(song)
+      song.vote = song.vote + 1
+      console.log(song)
+      await song.save()
+      return song
+    } catch (err) {
+      throw err
+    }
+  },
 }

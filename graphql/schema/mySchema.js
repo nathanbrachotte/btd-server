@@ -71,6 +71,7 @@ module.exports = buildSchema(`
       addSongToSession(songInput: SongInput): Session!
       deleteSong(songId: ID!): Session!
       login(email: String!, password: String!): AuthData!
+      upVoteSong(songId: ID!): Song!
     }
 
     type Subscription {
